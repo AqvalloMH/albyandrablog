@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.style.background = `linear-gradient(${gradientAngle}deg, #1e1e2f, #282845, #1e1e2f)`;
     }, 50);
 
-    // Tilt effect untuk card
+    // Tilt effect untuk cardo
     document.querySelectorAll('.project-card, .skill-card, .stat-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
