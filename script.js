@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.1 });
     animatedElements.forEach(el => animObserver.observe(el));
 
-    // Background gradient animation
+    // Background gradient animation hhhh
     let gradientAngle = 0;
     setInterval(() => {
         gradientAngle += 0.3;
