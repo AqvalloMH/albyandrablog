@@ -161,7 +161,7 @@ h1, h2, h3, h4 {
         height 0.3s ease,
         background 0.3s ease;
     mix-blend-mode: difference;
-    backdrop-filter: invert(1);
+    backdrop-filter:-webkit-backdrop-filter invert(1);
 }
 
 .cursor.hovered {
@@ -1627,7 +1627,7 @@ section.in-view {
     background: rgba(0,0,0,0.8);
     color: white;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 4px
     font-size: 0.75rem;
     opacity: 0;
     pointer-events: none;
