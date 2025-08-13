@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM ONLINE :: VALL PROJECT</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        :root {
+            --neon-green: #00ff41;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --dark-bg: #0a0a0a;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        #terminal-container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        #terminal {
+            white-space: pre;
+            line-height: 1.3;
+            text-shadow: 0 0 5px var(--neon-green);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(0, 255, 65, 0) 0%, 
+                rgba(0, 255, 65, 0.1) 50%, 
+                rgba(0, 255, 65, 0) 100%);
+            z-index: 3;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes scanline {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+        
+        .glitch-box {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-box::before, .glitch-box::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+        }
+        
+        .glitch-box::before {
+            left: 3px;
+            text-shadow: -3px 0 var(--neon-pink);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        
+        .glitch-box::after {
+            left: -3px;
+            text-shadow: 3px 0 var(--neon-blue);
+            animation: glitch-anim2 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(32px, 9999px, 76px, 0); }
+            10% { clip: rect(8px, 9999px, 44px, 0); }
+            20% { clip: rect(76px, 9999px, 52px, 0); }
+            30% { clip: rect(92px, 9999px, 99px, 0); }
+            40% { clip: rect(23px, 9999px, 84px, 0); }
+            50% { clip: rect(87px, 9999px, 99px, 0); }
+            60% { clip: rect(38px, 9999px, 42px, 0); }
+            70% { clip: rect(12px, 9999px, 77px, 0); }
+            80% { clip: rect(54px, 9999px, 59px, 0); }
+            90% { clip: rect(66px, 9999px, 99px, 0); }
+            100% { clip: rect(23px, 9999px, 99px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(95px, 9999px, 15px, 0); }
+            10% { clip: rect(65px, 9999px, 5px, 0); }
+            20% { clip: rect(51px, 9999px, 97px, 0); }
+            30% { clip: rect(78px, 9999px, 94px, 0); }
+            40% { clip: rect(32px, 9999px, 30px, 0); }
+            50% { clip: rect(54px, 9999px, 93px, 0); }
+            60% { clip: rect(28px, 9999px, 99px, 0); }
+            70% { clip: rect(45px, 9999px, 69px, 0); }
+            80% { clip: rect(23px, 9999px, 85px, 0); }
+            90% { clip: rect(82px, 9999px, 52px, 0); }
+            100% { clip: rect(71px, 9999px, 14px, 0); }
+        }
+        
+        .text-transform {
+            animation: textTransform 8s infinite;
+        }
+        
+        @keyframes textTransform {
+            0%, 20% { content: "SYSTEM ONLINE"; }
+            25%, 45% { content: "システム作動中"; }
+            50%, 70% { content: "VALL PROJECT ACTIVE"; }
+            75%, 95% { content: "ヴァルプロジェクト起動"; }
+        }
+        
+        #enter-btn {
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 15px 40px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 18px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            box-shadow: 0 0 10px var(--neon-green);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        #enter-btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        #enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        #enter-btn:hover::before {
+            left: 100%;
+        }
+        
+        #enter-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 255, 65, 0.2);
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: var(--neon-green);
+            animation: progress 3s ease-in-out forwards;
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        @keyframes progress {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        .blink {
+            animation: blink 0.7s infinite;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        .command {
+            color: #ffff00;
+        }
+        
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal-container">
+        <canvas id="matrix" class="matrix-rain"></canvas>
+        <div class="scanline"></div>
+        <div class="binary-rain" id="binary-rain"></div>
+        <div id="terminal"></div>
+    </div>
+    <button id="enter-btn" onclick="window.location.href='https://aqvallomh.github.io/albyandrablog/'">ACCESS ACCEPTED</button>
+
+    <script>
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = document.getElementById('terminal-container').offsetWidth;
+        canvas.height = document.getElementById('terminal-container').offsetHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+        const binary = '01';
+        
+        const alphabet = katakana + latin + nums + symbols;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = Math.random() * canvas.height;
+        }
+        
+        const drawMatrix = () => {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        // Binary rain effect
+        const binaryRain = document.getElementById('binary-rain');
+        let binaryElements = '';
+        
+        for (let i = 0; i < 100; i++) {
+            const left = Math.random() * 100;
+            const animationDuration = 2 + Math.random() * 3;
+            const delay = Math.random() * 5;
+            const binaryString = Array(20).fill(0).map(() => Math.round(Math.random())).join('');
+            
+            binaryElements += `
+                <div style="
+                    position: absolute;
+                    left: ${left}%;
+                    top: -20px;
+                    color: rgba(0, 255, 65, ${0.2 + Math.random() * 0.3});
+                    animation: fall ${animationDuration}s linear ${delay}s infinite;
+                    font-family: monospace;
+                    white-space: nowrap;
+                ">
+                    ${binaryString}
+                </div>
+            `;
+        }
+        
+        binaryRain.innerHTML = binaryElements;
+        
+        // Add styles for binary rain
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to { transform: translateY(${canvas.height + 20}px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Terminal animation
+        const terminal = document.getElementById('terminal');
+        const enterBtn = document.getElementById('enter-btn');
+        const lines = [
+            "┌──────────────────────────────────────────────────────┐",
+            "│                                                      │",
+            "│   ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗",
+            "│   ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║",
+            "│   ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║",
+            "│   ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║",
+            "│   ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║",
+            "│   ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝",
+            "│                                                      │",
+            "└──────────────────────────────────────────────────────┘",
+            "",
+            "[ INITIALIZING VALL SYSTEM... ]",
+            ">>> LOADING CYBER CORE: <span class='glitch-box' data-text='██████████'>██████████</span>",
+            ">>> ACTIVATING NEURAL NETWORKS",
+            ">>> CONNECTING TO MAINFRAME",
+            "",
+            "<div class='progress-container'><div class='progress-bar'></div></div>",
+            "",
+            "<span class='command'>[ STATUS: <span class='glitch-box' data-text='ONLINE'>ONLINE</span> ]</span>",
+            "<span class='command'>[ PROJECT: <span class='glitch-box' data-text='VALL'>VALL</span> <span class='glitch-box' data-text='ACTIVE'>ACTIVE</span> ]</span>",
+            "",
+            "<span class='command'>[ WARNING: HIGH-INTENSITY CREATIVITY DETECTED ]</span>",
+            "<span class='command'>[ SYSTEM READY FOR USER INPUT ]</span>",
+            "",
+            "<span id='dynamic-text' class='command'>SYSTEM ONLINE</span>",
+            "<span class='blink'>_</span>"
+        ];
+
+        let i = 0;
+        function typeWriter() {
+            if (i < lines.length) {
+                terminal.innerHTML += lines[i] + "<br>";
+                i++;
+                setTimeout(typeWriter, 100);
+            } else {
+                // Start dynamic text transformation
+                startTextTransformation();
+                // Show button after animation completes
+                setTimeout(() => {
+                    enterBtn.classList.add('visible');
+                }, 1000);
+            }
+        }
+
+        // Dynamic text transformation between English/Japanese
+        function startTextTransformation() {
+            const dynamicText = document.getElementById('dynamic-text');
+            const texts = [
+                "SYSTEM ONLINE",
+                "システム作動中",
+                "VALL PROJECT ACTIVE",
+                "ヴァルプロジェクト起動"
+            ];
+            let currentIndex = 0;
+            
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % texts.length;
+                dynamicText.textContent = texts[currentIndex];
+                
+                // Add glitch effect during transition
+                dynamicText.classList.add('glitch-box');
+                setTimeout(() => {
+                    dynamicText.classList.remove('glitch-box');
+                }, 300);
+            }, 2000);
+        }
+
+        // Start animations
+        setInterval(drawMatrix, 50);
+        setTimeout(typeWriter, 1000);
+        
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            canvas.width = document.getElementById('terminal-container').offsetWidth;
+            canvas.height = document.getElementById('terminal-container').offsetHeight;
+        });
+    </script>
+</body>
+</html>
